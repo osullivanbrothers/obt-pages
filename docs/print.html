@@ -1,0 +1,877 @@
+<!DOCTYPE HTML>
+<html lang="en" class="ayu sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Optivan User Manual</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="How to build, run, and interpret optimization studies in Optivan — the visual CAE optimization platform.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "ayu";
+            const default_dark_theme = "ayu";
+            window.path_to_searchindex_js = "searchindex-3ae2ccd3.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-29243c9c.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('ayu')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Optivan User Manual</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p><strong>Optivan</strong> is a visual optimization platform for computer-aided engineering (CAE). You
+build an engineering study as a <strong>node graph</strong> — design variables flow into evaluators
+(Python, shell, Matlab, or a CAE solver such as LS-DYNA), and the results feed objectives
+and constraints. Optivan then drives an optimizer, design-of-experiments (DOE), or
+robustness study over that graph and gives you the results as interactive charts.</p>
+<p>If you have used a node-based tool — a shader graph, a compositing graph, or an MDO
+package such as HEEDS or modeFRONTIER — the model will feel familiar: <strong>boxes are
+operations, wires carry data, and the whole graph is evaluated once per design point.</strong></p>
+<h2 id="what-you-can-do-with-optivan"><a class="header" href="#what-you-can-do-with-optivan">What you can do with Optivan</a></h2>
+<ul>
+<li><strong>Optimize</strong> a design against one or more objectives, subject to constraints.</li>
+<li><strong>Explore</strong> a design space with a DOE (Latin Hypercube, Sobol, full factorial, …).</li>
+<li><strong>Quantify uncertainty</strong> with Monte Carlo and robust / reliability-based optimization.</li>
+<li><strong>Wrap any solver</strong> — call Python or shell, template an input deck with the File Mapper,
+and read results back from <code>binout</code>, <code>d3plot</code>, CSV, or regex.</li>
+<li><strong>Scale out</strong> — run evaluations locally or on SSH / SLURM / LSF compute targets.</li>
+<li><strong>Understand results</strong> — parallel-coordinates plots, scatter matrices, correlation
+heatmaps, response surfaces, and decision-tree variable importance.</li>
+</ul>
+<h2 id="how-this-manual-is-organized"><a class="header" href="#how-this-manual-is-organized">How this manual is organized</a></h2>
+<p>The chapters build on each other. If you are new, read <strong>Getting Started</strong> and
+<strong>Core Concepts</strong> first, then <strong>Building a Workflow</strong> — together they take you from a blank
+canvas to a running optimization. Later chapters go deep on evaluators, LS-DYNA, run
+configuration, compute targets, and results.</p>
+<p>Every operation is shown step by step with a screenshot, so you can follow along in the app.</p>
+<h2 id="getting-help-inside-the-app"><a class="header" href="#getting-help-inside-the-app">Getting help inside the app</a></h2>
+<p>You don’t have to leave Optivan to find an answer. Click <strong>Ask Optivan</strong> in the top bar to
+open the in-app assistant. It is trained on this manual and can also — if you opt in — look
+at your current project graph and last run to give specific, grounded help (for example,
+“why isn’t my optimization converging?”). It only reads your project to advise you; it never
+changes it. See <a href="#troubleshooting--faq">Troubleshooting &amp; FAQ</a> for more.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<p>This chapter installs Optivan, signs you in, and gives you a tour of the workspace so the
+rest of the manual has names to point at.</p>
+<h2 id="installing-optivan"><a class="header" href="#installing-optivan">Installing Optivan</a></h2>
+<ol>
+<li>Go to <strong>obt.tools</strong> and enter your email to get the download for your platform
+(macOS <code>.dmg</code>, Windows <code>.msi</code>, or Linux <code>.deb</code>).</li>
+<li>Install it the way you install any app on your platform, then launch <strong>Optivan</strong>.</li>
+</ol>
+<p><img src="images/getting-started/01-download.png" alt="Optivan download block on obt.tools">
+<em>The obt.tools download gate — enter your email and pick your platform.</em></p>
+<h2 id="signing-in"><a class="header" href="#signing-in">Signing in</a></h2>
+<p>Optivan requires a free account (it keeps your license and the in-app assistant tied to
+you). On first launch you’ll see the sign-in screen.</p>
+<ul>
+<li><strong>Returning users:</strong> enter your email and password and click <strong>Sign in</strong>.</li>
+<li><strong>New users:</strong> enter your email, type the code we email you, then set a password.</li>
+</ul>
+<p><img src="images/getting-started/02-sign-in.png" alt="The Optivan sign-in screen">
+<em>First-launch sign-in. New users receive a one-time code by email, then set a password.</em></p>
+<p>Once you’re signed in, your session is remembered — you won’t be asked again on the next
+launch.</p>
+<h2 id="a-tour-of-the-workspace"><a class="header" href="#a-tour-of-the-workspace">A tour of the workspace</a></h2>
+<p>When the app opens you’re looking at the <strong>workflow editor</strong>. The screenshot below labels
+the regions you’ll use throughout this manual.</p>
+<p><img src="images/getting-started/03-workspace-tour.png" alt="The Optivan workspace with regions labelled">
+<em>The workspace: (1) top bar, (2) activity bar, (3) left sidebar, (4) node canvas, (5) node
+palette / agent dock, (6) status bar, (7) Ask Optivan.</em></p>
+<ol>
+<li><strong>Top bar</strong> — global actions: the project switcher, the <strong>Run</strong> button (and its run-config
+gear), fit-to-canvas, theme, and <strong>Ask Optivan</strong>.</li>
+<li><strong>Activity bar</strong> — the narrow icon strip that switches the left sidebar between Project,
+Runs, and Properties.</li>
+<li><strong>Left sidebar</strong> — the project tree, run history, and the properties of the selected node.</li>
+<li><strong>Node canvas</strong> — where you build the graph. This is the heart of Optivan.</li>
+<li><strong>Bottom dock</strong> — the <strong>Nodes</strong> palette (drag nodes onto the canvas) and the <strong>Agent /
+Terminal</strong> tabs.</li>
+<li><strong>Status bar</strong> — status messages and a live trace while a study runs.</li>
+<li><strong>Ask Optivan</strong> — opens the in-app help assistant (see <a href="#troubleshooting--faq">Troubleshooting</a>).</li>
+</ol>
+<h2 id="your-first-project"><a class="header" href="#your-first-project">Your first project</a></h2>
+<p>A new, empty project opens automatically. To start fresh at any time use <strong>File → New
+Project</strong>, and <strong>File → Save</strong> / <strong>Save As</strong> to write it to disk. Recent projects appear in
+the project switcher in the top bar.</p>
+<p><img src="images/getting-started/04-project-switcher.png" alt="The project switcher dropdown in the top bar">
+<em>Click the project name in the top bar to switch projects or open a recent one.</em></p>
+<p>You’re ready to build. The next chapter explains the pieces of a graph; after that,
+<a href="#building-a-workflow">Building a Workflow</a> walks you through assembling one.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="core-concepts"><a class="header" href="#core-concepts">Core Concepts</a></h1>
+<p>Everything in Optivan is built from a small set of pieces. Learn these once and the rest of
+the app falls into place.</p>
+<h2 id="nodes"><a class="header" href="#nodes">Nodes</a></h2>
+<p>A <strong>node</strong> is a box on the canvas. Every node is one of four roles:</p>
+<ul>
+<li><strong>Sources</strong> supply data — <em>Input Variable</em>, <em>Constant</em>, <em>Input File</em>, <em>Excel</em>.</li>
+<li><strong>Evaluators</strong> transform data — <em>Python Script</em>, <em>Shell Script</em>, <em>Matlab</em>, <em>File Mapper</em>,
+<em>Output Parser</em>, <em>LS-DYNA Binout</em>, <em>LS-DYNA D3plot</em>.</li>
+<li><strong>Goals</strong> declare what the optimizer cares about — <em>Objective</em>, <em>Constraint</em>, <em>Output
+Variable</em>, <em>Composite</em>.</li>
+<li><strong>Support</strong> documents the graph — <em>Note</em>.</li>
+</ul>
+<p><img src="images/core-concepts/01-node-anatomy.png" alt="A node on the canvas with its parts labelled">
+<em>A node has a name, input pins on the left, and output pins on the right. Select it to edit
+its configuration in the Properties panel.</em></p>
+<h2 id="pins-and-wires"><a class="header" href="#pins-and-wires">Pins and wires</a></h2>
+<p>Each node has <strong>pins</strong> — the small ports on its left (inputs) and right (outputs). A <strong>wire</strong>
+connects an output pin to an input pin and carries one value per evaluation.</p>
+<p>Pins are <strong>typed</strong>, and Optivan type-checks every wire so you can’t connect mismatched data:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Pin type</th><th>Carries</th><th>Examples</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Scalar</strong></td><td>a single number</td><td>a variable’s value, a Python result, an objective</td></tr>
+<tr><td><strong>File</strong></td><td>a file path</td><td>a File Mapper’s generated deck, a solver input</td></tr>
+<tr><td><strong>Trigger</strong></td><td>a “done” pulse</td><td>LS-DYNA signalling that a run finished</td></tr>
+<tr><td><strong>Vector</strong></td><td>a time-series / array</td><td>a <code>binout</code> channel over time</td></tr>
+</tbody>
+</table>
+</div>
+<p><img src="images/core-concepts/02-wiring.png" alt="Dragging a wire between two pins">
+<em>Drag from an output pin to a compatible input pin. A File output cannot land on a Scalar
+input — Optivan rejects the connection.</em></p>
+<h2 id="the-evaluation-pipeline"><a class="header" href="#the-evaluation-pipeline">The evaluation pipeline</a></h2>
+<p>When a study runs, Optivan <strong>compiles the graph into a pipeline</strong> and evaluates it once per
+design point:</p>
+<ol>
+<li>The optimizer proposes a design vector <code>x</code> (one value per Input Variable).</li>
+<li>Optivan creates an isolated working directory for that evaluation (<code>eval_000001/</code>, …) so
+parallel evaluations never clash over files.</li>
+<li>Nodes evaluate in dependency order: variables are set, evaluators run, files are
+generated and parsed, and the Objective / Constraint nodes record their values.</li>
+<li>The result of one evaluation is an <strong>Eval</strong> — its objective(s), its constraint margins,
+and whether it was feasible.</li>
+</ol>
+<p><img src="images/core-concepts/03-pipeline.png" alt="The pipeline evaluating one design point">
+<em>One design point flows left-to-right through the graph; each evaluation runs in its own
+temp directory.</em></p>
+<h2 id="objectives-constraints-and-feasibility"><a class="header" href="#objectives-constraints-and-feasibility">Objectives, constraints, and feasibility</a></h2>
+<ul>
+<li>An <strong>objective</strong> is a number to <strong>minimize</strong> or <strong>maximize</strong>. Multiple objectives turn the
+study into a multi-objective search and Optivan returns a <strong>Pareto front</strong>.</li>
+<li>A <strong>constraint</strong> is a number with a rule (<code>≤</code>, <code>≥</code>, <code>=</code>, or a range). A design is
+<strong>feasible</strong> when every constraint is satisfied. The optimizer prefers feasible designs and
+penalizes violations.</li>
+</ul>
+<p>These are declared by wiring a scalar into an <strong>Objective</strong> or <strong>Constraint</strong> node — covered
+in <a href="#objectives--constraints">Objectives &amp; Constraints</a>.</p>
+<h2 id="run-configurations-and-compute-targets"><a class="header" href="#run-configurations-and-compute-targets">Run configurations and compute targets</a></h2>
+<ul>
+<li>A <strong>run configuration</strong> is the recipe for a study: its type (Optimization, DOE, Monte
+Carlo, …), the algorithm, iteration limits, sampling, and parallel workers. A project can
+hold several and you pick which one is active. See <a href="#running-a-study">Running a Study</a>.</li>
+<li>A <strong>compute target</strong> is <em>where</em> an evaluator runs — Local, SSH, SLURM, or LSF. See
+<a href="#compute-targets">Compute Targets</a>.</li>
+</ul>
+<p>With these concepts in hand, you’re ready to build a graph.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="building-a-workflow"><a class="header" href="#building-a-workflow">Building a Workflow</a></h1>
+<p>This chapter assembles a complete, runnable graph: two design variables feeding a Python
+evaluator, with one objective and one constraint. The pattern here is the backbone of nearly
+every Optivan study.</p>
+<p>The target topology:</p>
+<pre><code>Input Variable  ─┐
+                 ├─▶  Python Script  ─┬─▶  Objective
+Input Variable  ─┘                    └─▶  Constraint
+</code></pre>
+<h2 id="1-add-nodes-from-the-palette"><a class="header" href="#1-add-nodes-from-the-palette">1. Add nodes from the palette</a></h2>
+<p>Open the <strong>Nodes</strong> palette in the bottom dock. Nodes are grouped — Variables, Goals,
+Applications, Support. Drag a node onto the canvas, or double-click it.</p>
+<p><img src="images/building-a-workflow/01-palette.png" alt="The node palette with categories">
+<em>The Nodes palette. Drag an <strong>Input Variable</strong> onto the canvas to begin.</em></p>
+<p>Add two <strong>Input Variable</strong> nodes, one <strong>Python Script</strong>, one <strong>Objective</strong>, and one
+<strong>Constraint</strong>.</p>
+<p><img src="images/building-a-workflow/02-nodes-placed.png" alt="Five nodes placed on the canvas">
+<em>Two Input Variables, a Python Script, an Objective, and a Constraint — not yet wired.</em></p>
+<h2 id="2-configure-the-variables"><a class="header" href="#2-configure-the-variables">2. Configure the variables</a></h2>
+<p>Select an Input Variable to edit it in the <strong>Properties</strong> panel. Give it a name (this name is
+how your evaluator code refers to it) and set its bounds.</p>
+<p><img src="images/building-a-workflow/03-variable-config.png" alt="Editing an Input Variable in the Properties panel">
+<em>Name the variable <code>x1</code>, set its type to <strong>Continuous</strong>, and give it a lower and upper bound.</em></p>
+<p>Variables come in four types:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Type</th><th>Use for</th><th>Key settings</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Continuous</strong></td><td>real-valued parameters (thickness, angle)</td><td>lower &amp; upper bound</td></tr>
+<tr><td><strong>Integer</strong></td><td>whole-number parameters (count of ribs)</td><td>bounds; values are rounded</td></tr>
+<tr><td><strong>Discrete</strong></td><td>values on a fixed grid (gauge steps)</td><td>bounds + step size</td></tr>
+<tr><td><strong>Categorical</strong></td><td>unordered choices (material)</td><td>a list of categories</td></tr>
+</tbody>
+</table>
+</div>
+<p>For uncertainty studies you can also give a variable a <strong>distribution</strong> (Normal, Uniform,
+LogNormal) — see <a href="#running-a-study">Running a Study</a>. Name the second variable <code>x2</code>.</p>
+<h2 id="3-wire-variables-into-the-evaluator"><a class="header" href="#3-wire-variables-into-the-evaluator">3. Wire variables into the evaluator</a></h2>
+<p>An <strong>inline</strong> Python Script exposes a single fan-in input pin. Wire <strong>both</strong> variables into
+that one pin — Optivan passes each wired variable to your function by name. (This single
+fan-in pin is the correct pattern for inline Python and Matlab evaluators; do not look for a
+separate pin per variable.)</p>
+<p><img src="images/building-a-workflow/04-wire-variables.png" alt="Both variables wired into the Python Script’s input pin">
+<em>Drag a wire from each variable’s <code>value</code> output into the Python Script’s input pin. Both
+land on the same fan-in pin.</em></p>
+<h2 id="4-write-the-evaluator"><a class="header" href="#4-write-the-evaluator">4. Write the evaluator</a></h2>
+<p>Select the Python Script. In <strong>inline</strong> mode, write a function whose parameters match your
+variable names. Return the objective value.</p>
+<pre><code class="language-python">def evaluate(x1, x2):
+    # a simple bowl with a minimum away from the origin
+    return (x1 - 3.0)**2 + (x2 + 1.0)**2
+</code></pre>
+<p><img src="images/building-a-workflow/05-python-inline.png" alt="The inline Python editor with the evaluate function">
+<em>Inline mode: the function parameters (<code>x1</code>, <code>x2</code>) match the wired variable names. The return
+value becomes the script’s Scalar output.</em></p>
+<blockquote>
+<p>The other evaluator modes and node types (file-based Python, Shell, Matlab, File Mapper,
+Output Parser, LS-DYNA) are covered in <a href="#evaluators">Evaluators</a> and
+<a href="#ls-dyna-integration">LS-DYNA Integration</a>.</p>
+</blockquote>
+<h2 id="5-wire-the-objective-and-constraint"><a class="header" href="#5-wire-the-objective-and-constraint">5. Wire the objective and constraint</a></h2>
+<p>Wire the Python Script’s <code>value</code> output into the <strong>Objective</strong> node, and set its sense to
+<strong>Minimize</strong>.</p>
+<p>To add a constraint, you’ll usually compute the constrained quantity too. The simplest
+approach is a second scalar output or a separate evaluator; here, wire the same <code>value</code> into
+the <strong>Constraint</strong> node and set the rule (for example <code>≤ 50</code>). A design is feasible when the
+constraint holds.</p>
+<p><img src="images/building-a-workflow/06-wire-goals.png" alt="Objective and Constraint wired to the evaluator output">
+<em>The Python output feeds the Objective (Minimize) and the Constraint (≤ 50). Never wire a raw
+Input Variable straight into an Objective or Constraint — they expect an evaluated scalar.</em></p>
+<h2 id="6-validate-the-graph"><a class="header" href="#6-validate-the-graph">6. Validate the graph</a></h2>
+<p>Before running, check the graph. Optivan flags common problems — a node with an unwired
+required input, an objective with no source, or a type mismatch.</p>
+<p><img src="images/building-a-workflow/07-validate.png" alt="The validation result showing a healthy graph">
+<em>A valid graph: every required pin is wired and the study has at least one objective.</em></p>
+<p>You now have a complete workflow. Continue to <a href="#objectives--constraints">Objectives &amp; Constraints</a>
+for the goal nodes in depth, then <a href="#running-a-study">Running a Study</a> to execute it.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="evaluators"><a class="header" href="#evaluators">Evaluators</a></h1>
+<p>An <strong>evaluator</strong> runs your code or an external solver to turn a design point into numbers.
+Optivan ships several; they share the same idea — values come in on input pins, a result goes
+out on an output pin — and each runs in an isolated per-evaluation directory.</p>
+<h2 id="python-script"><a class="header" href="#python-script">Python Script</a></h2>
+<p>The workhorse. Two modes:</p>
+<ul>
+<li><strong>Inline</strong> — write a function directly in the node. It exposes a single fan-in input pin;
+wire all variables into it and name your function’s parameters after them (see
+<a href="#building-a-workflow">Building a Workflow</a>). The return value is the Scalar output.</li>
+<li><strong>File</strong> — point the node at a <code>.py</code> file. Pins map one-to-one to command-line arguments,
+which is convenient for code you already version-control.</li>
+</ul>
+<p><img src="images/evaluators/01-python-modes.png" alt="The Python Script node in inline and file modes">
+<em>Switch between Inline and File mode in the Properties panel. Inline is fastest to start with.</em></p>
+<p>A Python evaluator can be assigned to a <a href="#compute-targets">compute target</a> to run on a
+remote machine or cluster.</p>
+<h2 id="shell-script"><a class="header" href="#shell-script">Shell Script</a></h2>
+<p>Runs any command — a bash one-liner, a compiled binary, a solver. Inputs are passed as
+environment variables or stdin; outputs are read from stdout or a result file. Use this to
+wrap anything that isn’t Python or Matlab.</p>
+<p><img src="images/evaluators/02-shell.png" alt="A Shell Script node configured to run a solver">
+<em>The Shell Script node runs a command in the evaluation’s working directory and reads a scalar
+result back.</em></p>
+<h2 id="matlab"><a class="header" href="#matlab">Matlab</a></h2>
+<p>Like the Python Script but calls Matlab or Octave, inline or from a file. Assign it to a
+compute target to pool Matlab licenses on a cluster.</p>
+<h2 id="file-mapper"><a class="header" href="#file-mapper">File Mapper</a></h2>
+<p>Generates a solver <strong>input deck</strong> from a template by substituting design variables into
+placeholders.</p>
+<ul>
+<li>Wire variables into its fan-in pin.</li>
+<li>Point it at a template file with placeholders — choose a delimiter style (<code>{thickness}</code>,
+<code>&lt;thickness&gt;</code>, <code>%thickness%</code>, or <code>[[thickness]]</code>).</li>
+<li>Map each placeholder to a variable, with an optional number format.</li>
+<li>Its output is a <strong>File</strong> pin (the generated deck) you wire into a solver.</li>
+</ul>
+<p><img src="images/evaluators/03-file-mapper.png" alt="The File Mapper mapping variables into a template">
+<em>The File Mapper fills <code>{thickness}</code> in a template with the current design value and emits the
+finished deck as a File output.</em></p>
+<p>The classic chain is: <strong>Variables → File Mapper → Shell Script (run solver) → Output Parser →
+Objective.</strong></p>
+<h2 id="output-parser"><a class="header" href="#output-parser">Output Parser</a></h2>
+<p>Extracts a single number from a results file:</p>
+<ul>
+<li><strong>Regex</strong> mode — capture group 1 of a pattern.</li>
+<li><strong>CSV</strong> mode — a column reduced by <code>last</code>, <code>first</code>, <code>min</code>, <code>max</code>, <code>mean</code>, or <code>sum</code>.</li>
+</ul>
+<p>Its input is a <strong>File</strong>; its output is a <strong>Scalar</strong> you feed to a goal.</p>
+<p><img src="images/evaluators/04-output-parser.png" alt="The Output Parser pulling a value from a results file">
+<em>Regex or CSV extraction turns a solver’s text output into a scalar for an Objective or
+Constraint.</em></p>
+<p>For LS-DYNA, you usually skip the Output Parser and read <code>binout</code> / <code>d3plot</code> directly — see
+<a href="#ls-dyna-integration">LS-DYNA Integration</a>.</p>
+<h2 id="excel"><a class="header" href="#excel">Excel</a></h2>
+<p>Reads values from an Excel workbook, exposing cells as Scalar outputs — handy when a
+spreadsheet already encodes part of your model.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="ls-dyna-integration"><a class="header" href="#ls-dyna-integration">LS-DYNA Integration</a></h1>
+<p>Optivan reads LS-DYNA results directly, so you don’t have to post-process by hand. A typical
+crash / structural optimization wires up like this:</p>
+<pre><code>Variables ─▶ File Mapper (k-file) ─▶ Shell Script (run LS-DYNA) ─▶ LS-DYNA Binout ─▶ Objective
+</code></pre>
+<p>The File Mapper writes the keyword deck, the Shell Script launches the solver, and the
+<strong>Binout</strong> or <strong>D3plot</strong> node reads the binary results.</p>
+<h2 id="ls-dyna-binout"><a class="header" href="#ls-dyna-binout">LS-DYNA Binout</a></h2>
+<p>Reads time-history channels from a <code>binout</code> file.</p>
+<ol>
+<li>Set the <strong>glob path</strong> that locates the binout for each evaluation (for example
+<code>eval_*/binout*</code>).</li>
+<li><strong>Enumerate</strong> the available channels — Optivan walks the binout hierarchy and lists the
+leaf paths (e.g. <code>nodout / d000042 / z_displacement</code>).</li>
+<li>Pick the channels you want and how to reduce them: a <strong>peak</strong> (Scalar output) or the full
+<strong>time-series</strong> (Vector output).</li>
+</ol>
+<p><img src="images/lsdyna/01-binout.png" alt="Browsing binout channels and selecting outputs">
+<em>Enumerate the binout hierarchy, then choose channels and a peak-or-time-series reduction.
+Each chosen channel becomes an output pin.</em></p>
+<p>The Binout node takes a <strong>Trigger</strong> input — wire the solver’s “done” signal into it so it only
+reads results after the run completes. No separate Output Parser is needed.</p>
+<h2 id="ls-dyna-d3plot"><a class="header" href="#ls-dyna-d3plot">LS-DYNA D3plot</a></h2>
+<p>Reads nodal displacement from the <code>d3plot</code> mesh-state files. Choose a metric — peak
+displacement at the final state, peak across all states, or the displacement of a specific
+node — and the node outputs that Scalar.</p>
+<p><img src="images/lsdyna/02-d3plot.png" alt="Configuring a D3plot displacement metric">
+<em>The D3plot node extracts a displacement metric from the mesh states and outputs it as a
+scalar for a goal.</em></p>
+<h2 id="tips"><a class="header" href="#tips">Tips</a></h2>
+<ul>
+<li>Keep the File Mapper’s placeholders and your keyword deck in sync; a mistyped token leaves
+the default value in the deck.</li>
+<li>Use the glob path to match the <strong>per-evaluation</strong> working directory so parallel runs read
+their own results.</li>
+<li>Start with a tiny <code>max_iter</code> and one worker to confirm the solver launches and the channel
+paths resolve before scaling up on a <a href="#compute-targets">compute target</a>.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="objectives--constraints"><a class="header" href="#objectives--constraints">Objectives &amp; Constraints</a></h1>
+<p>Objectives and constraints are how you tell the optimizer what “good” means. They are <strong>sink</strong>
+nodes — they take a scalar in and produce no output.</p>
+<h2 id="objectives"><a class="header" href="#objectives">Objectives</a></h2>
+<p>An <strong>Objective</strong> node takes one Scalar input (<code>value</code>) and a <strong>sense</strong>:</p>
+<ul>
+<li><strong>Minimize</strong> — drive the value down (mass, cost, peak stress).</li>
+<li><strong>Maximize</strong> — drive the value up (stiffness, energy absorbed).</li>
+</ul>
+<p><img src="images/objectives-constraints/01-objective.png" alt="An Objective node set to Minimize">
+<em>Wire your evaluator’s scalar output into the Objective’s <code>value</code> pin and choose Minimize or
+Maximize.</em></p>
+<h3 id="multiple-objectives--a-pareto-front"><a class="header" href="#multiple-objectives--a-pareto-front">Multiple objectives → a Pareto front</a></h3>
+<p>Add more than one Objective node and the study becomes <strong>multi-objective</strong>. There is rarely a
+single best design; instead Optivan returns a <strong>Pareto front</strong> — the set of designs where you
+can’t improve one objective without worsening another. Use a multi-objective algorithm such
+as NSGA-II (see <a href="#running-a-study">Running a Study</a>).</p>
+<p><img src="images/objectives-constraints/02-multiobjective.png" alt="Two objectives producing a Pareto front">
+<em>Mass vs. stiffness: each point is a non-dominated design on the Pareto front.</em></p>
+<h2 id="constraints"><a class="header" href="#constraints">Constraints</a></h2>
+<p>A <strong>Constraint</strong> node takes a Scalar input (<code>g</code>) and enforces a rule:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Kind</th><th>Feasible when</th><th>Set</th></tr>
+</thead>
+<tbody>
+<tr><td><code>≤</code></td><td><code>g ≤ upper</code></td><td>upper bound</td></tr>
+<tr><td><code>≥</code></td><td><code>g ≥ lower</code></td><td>lower bound</td></tr>
+<tr><td><code>=</code></td><td><code>g = target</code> (within tolerance)</td><td>target + tolerance</td></tr>
+<tr><td>range</td><td><code>lower ≤ g ≤ upper</code></td><td>both bounds</td></tr>
+</tbody>
+</table>
+</div>
+<p><img src="images/objectives-constraints/03-constraint.png" alt="A Constraint node configured as g ≤ 5">
+<em>Wire the constrained quantity into the <code>g</code> pin and set the kind and bound. Here: g ≤ 5.</em></p>
+<p>A design is <strong>feasible</strong> when every constraint holds. Internally Optivan tracks a signed
+<strong>margin</strong> per constraint — negative means satisfied, positive means violated — and the
+optimizer adds a penalty proportional to the violation, so it is steered toward feasibility.
+Equality constraints use the <strong>tolerance</strong> to decide how close is close enough.</p>
+<blockquote>
+<p><strong>Common mistake:</strong> wiring a raw Input Variable directly into an Objective or Constraint.
+These nodes expect an <em>evaluated</em> quantity (a Python result, a parsed solver output), not a
+design variable. If you just want to bound a variable, set its bounds on the variable node
+instead.</p>
+</blockquote>
+<h2 id="composite-nodes"><a class="header" href="#composite-nodes">Composite nodes</a></h2>
+<p>A <strong>Composite</strong> node combines several scalars into one using an algebraic expression — useful
+for weighted sums, stress margins, or normalizing before an objective.</p>
+<pre><code>0.7*mass + 0.3*max_disp
+</code></pre>
+<p><img src="images/objectives-constraints/04-composite.png" alt="A Composite node combining two inputs">
+<em>A Composite computes an expression over its wired inputs and outputs a single scalar — here a
+weighted sum that then feeds an Objective.</em></p>
+<p>With goals defined, you’re ready to configure and launch the study.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="running-a-study"><a class="header" href="#running-a-study">Running a Study</a></h1>
+<p>A <strong>run configuration</strong> is the recipe for a study — its type, algorithm, limits, and how many
+evaluations run in parallel. A project can hold several; you pick which one is active and
+press <strong>Run</strong>.</p>
+<h2 id="choosing-a-run-type"><a class="header" href="#choosing-a-run-type">Choosing a run type</a></h2>
+<p>Open the <strong>run configuration</strong> editor from the gear next to the <strong>Run</strong> button.</p>
+<p><img src="images/running-a-study/01-run-config.png" alt="The run configuration editor">
+<em>The run-config editor. Pick a run type, an algorithm, and limits, then save.</em></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Run type</th><th>What it does</th><th>Typical use</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Optimization</strong></td><td>search for the best design</td><td>minimize mass subject to constraints</td></tr>
+<tr><td><strong>DOE</strong></td><td>sample the space on a plan</td><td>screening, building a surrogate dataset</td></tr>
+<tr><td><strong>MonteCarlo</strong></td><td>random sampling from variable distributions</td><td>uncertainty quantification</td></tr>
+<tr><td><strong>RobustOptimization</strong></td><td>optimize accounting for variation (RBDO)</td><td>designs that stay feasible under scatter</td></tr>
+<tr><td><strong>SobolSensitivity</strong></td><td>variance-based sensitivity indices</td><td>which inputs matter most</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="algorithms-and-limits"><a class="header" href="#algorithms-and-limits">Algorithms and limits</a></h2>
+<p>The available algorithms depend on the run type. Common knobs:</p>
+<ul>
+<li><strong>max_iter</strong> — the evaluation budget (the most important limit to set).</li>
+<li><strong>tolerance</strong> — the convergence criterion.</li>
+<li><strong>pop_size / n_starts</strong> — population size or multi-start count for population and
+multi-start algorithms.</li>
+<li><strong>DOE method</strong> — Latin Hypercube, Sobol, Random, Full Factorial, or Central Composite —
+with a <strong>sample count</strong>.</li>
+<li><strong>surrogate</strong> — for surrogate-assisted runs (SRSM): Kriging, RBF, RSM, or a neural net,
+plus the number of initial and refinement samples.</li>
+<li><strong>robust parameters</strong> — sample count, β target, and seed for robust / reliability studies.</li>
+</ul>
+<p><img src="images/running-a-study/02-algorithm.png" alt="Algorithm settings for an optimization run">
+<em>Algorithm and limits for an Optimization run. Start with a modest <code>max_iter</code>, confirm the
+graph evaluates, then scale up.</em></p>
+<h2 id="parallel-workers"><a class="header" href="#parallel-workers">Parallel workers</a></h2>
+<p>Set <strong>workers</strong> to evaluate several design points at once. Because each evaluation runs in its
+own temp directory, parallelism is safe. The right number depends on your machine and, for
+remote evaluators, on your <a href="#compute-targets">compute target</a>.</p>
+<h2 id="running-and-watching-progress"><a class="header" href="#running-and-watching-progress">Running and watching progress</a></h2>
+<p>Press <strong>Run</strong> (or ⌘R). The status bar shows a live trace; the dashboard updates as
+evaluations complete. To stop early, press <strong>Run</strong> again (it becomes <strong>Stop</strong>).</p>
+<p><img src="images/running-a-study/03-running.png" alt="A study running with the live trace">
+<em>A live run: the status bar streams progress and the convergence chart fills in.</em></p>
+<p>When the study finishes, Optivan offers to save the results, and they appear under <strong>Runs</strong> in
+the left sidebar. Continue to <a href="#results--post-processing">Results &amp; Post-Processing</a> to interpret them.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="compute-targets"><a class="header" href="#compute-targets">Compute Targets</a></h1>
+<p>A <strong>compute target</strong> is <em>where</em> an evaluator runs. By default everything runs <strong>Local</strong>, on
+your machine. To use a remote server or an HPC scheduler, define a target and assign
+evaluators to it.</p>
+<p><img src="images/compute-targets/01-targets.png" alt="The compute targets panel">
+<em>Define compute targets here, then assign Python / Matlab / Shell evaluators to them.</em></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Target</th><th>Runs on</th><th>Key settings</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Local</strong></td><td>this machine</td><td>none</td></tr>
+<tr><td><strong>SSH</strong></td><td>a remote host</td><td>host, user, remote dir, key path</td></tr>
+<tr><td><strong>SLURM</strong></td><td>a Slurm cluster</td><td>host, user, partition, nodes, cpus, memory, walltime</td></tr>
+<tr><td><strong>LSF</strong></td><td>an IBM LSF cluster</td><td>host, user, queue, slots, memory, walltime</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="assigning-an-evaluator-to-a-target"><a class="header" href="#assigning-an-evaluator-to-a-target">Assigning an evaluator to a target</a></h2>
+<p>Select an evaluator (Python, Matlab, or Shell) and choose its compute target in the Properties
+panel. At run time that node’s work is dispatched to the target while the rest of the graph is
+orchestrated from your machine.</p>
+<p><img src="images/compute-targets/02-assign.png" alt="Assigning an evaluator to a SLURM target">
+<em>Each evaluator can run on a different target — for example, heavy solves on SLURM while light
+post-processing stays local.</em></p>
+<h2 id="tips-1"><a class="header" href="#tips-1">Tips</a></h2>
+<ul>
+<li>Combine targets with <strong>parallel workers</strong> (see <a href="#running-a-study">Running a Study</a>) to
+evaluate many design points at once on a cluster.</li>
+<li>Test connectivity with a small DOE before launching a long optimization.</li>
+<li>Remote evaluations still run in isolated per-evaluation directories, so parallel jobs don’t
+collide.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="results--post-processing"><a class="header" href="#results--post-processing">Results &amp; Post-Processing</a></h1>
+<p>When a study finishes, its results appear under <strong>Runs</strong> in the left sidebar and open in the
+<strong>dashboard</strong>. Optivan gives you several linked views to understand the design space, not just
+the single best point.</p>
+<p><img src="images/results/01-dashboard.png" alt="The results dashboard">
+<em>The dashboard after a run: convergence, the design table, and the chart palette.</em></p>
+<h2 id="convergence"><a class="header" href="#convergence">Convergence</a></h2>
+<p>For optimizations, the convergence chart shows the best objective value found so far against
+evaluation count — the quickest check that the search is making progress and has settled.</p>
+<p><img src="images/results/02-convergence.png" alt="A convergence curve">
+<em>Best-objective-so-far over evaluations. A flat tail means the search has converged.</em></p>
+<h2 id="parallel-coordinates-pcp"><a class="header" href="#parallel-coordinates-pcp">Parallel Coordinates (PCP)</a></h2>
+<p>Every evaluation is one line crossing an axis per variable, plus objectives and constraints.
+Brush an axis to filter; colour the lines by objective rank or by feasibility. This is the
+best single view for spotting trade-offs and feasible regions.</p>
+<p><img src="images/results/03-pcp.png" alt="A parallel-coordinates plot with an axis brushed">
+<em>Parallel coordinates: drag on an axis to filter designs; recolour by feasibility to see where
+constraints bite.</em></p>
+<h2 id="scatter-and-correlation"><a class="header" href="#scatter-and-correlation">Scatter and correlation</a></h2>
+<ul>
+<li><strong>Scatter matrix</strong> — every input-vs-output pair as a grid of 2-D scatter plots.</li>
+<li><strong>Correlation matrix</strong> — a Pearson-correlation heatmap showing which inputs move with which
+outputs.</li>
+</ul>
+<p><img src="images/results/04-correlation.png" alt="A correlation heatmap">
+<em>The correlation matrix highlights the strongest input-output relationships at a glance.</em></p>
+<h2 id="response-surface"><a class="header" href="#response-surface">Response surface</a></h2>
+<p>Fit a Kriging surrogate over two chosen variables (holding the rest at their mean) and view it
+as a contour heatmap — a smooth picture of how the objective responds to those two inputs.</p>
+<p><img src="images/results/05-response-surface.png" alt="A fitted response surface">
+<em>A response surface over two variables, with the evaluated points overlaid.</em></p>
+<h2 id="decision-tree-importance"><a class="header" href="#decision-tree-importance">Decision-tree importance</a></h2>
+<p>Fit a classification tree to the results and read off <strong>variable importance</strong> — which inputs
+explain the most variation in the objective. A fast way to decide what to keep exploring and
+what to fix.</p>
+<p><img src="images/results/06-decision-tree.png" alt="Variable-importance bars from a decision tree">
+<em>Decision-tree importance ranks inputs by how much they drive the objective.</em></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="tutorials"><a class="header" href="#tutorials">Tutorials</a></h1>
+<p>End-to-end walkthroughs that put the concepts together. Start with the first — it takes about
+ten minutes and uses nothing but Optivan.</p>
+<h2 id="tutorial-1--minimize-the-rosenbrock-function"><a class="header" href="#tutorial-1--minimize-the-rosenbrock-function">Tutorial 1 — Minimize the Rosenbrock function</a></h2>
+<p>A classic optimization test problem, built from scratch.</p>
+<p><strong>Goal:</strong> minimize <code>f(x1, x2) = (1 - x1)² + 100·(x2 - x1²)²</code>, which has its minimum at
+<code>(1, 1)</code>.</p>
+<ol>
+<li><strong>New project.</strong> File → New Project.</li>
+<li><strong>Add two Input Variables.</strong> Name them <code>x1</code> and <code>x2</code>; set both to <strong>Continuous</strong> with
+bounds <code>-2</code> to <code>2</code>.</li>
+<li><strong>Add a Python Script</strong> (inline) and wire both variables into its input pin.</li>
+<li><strong>Write the function:</strong>
+<pre><code class="language-python">def evaluate(x1, x2):
+    return (1 - x1)**2 + 100*(x2 - x1**2)**2
+</code></pre>
+</li>
+<li><strong>Add an Objective</strong>, wire the Python output into it, set <strong>Minimize</strong>.</li>
+<li><strong>Configure the run:</strong> Optimization, a gradient-free algorithm, <code>max_iter</code> ≈ 200.</li>
+<li><strong>Run.</strong> Watch the convergence curve drop toward zero and the best design approach
+<code>(1, 1)</code>.</li>
+</ol>
+<p><img src="images/tutorials/01-rosenbrock.png" alt="The finished Rosenbrock graph and its convergence">
+<em>The completed Rosenbrock workflow and its convergence toward the known minimum at (1, 1).</em></p>
+<h2 id="tutorial-2--a-file-mapper--external-solver-loop"><a class="header" href="#tutorial-2--a-file-mapper--external-solver-loop">Tutorial 2 — A File-Mapper + external-solver loop</a></h2>
+<p>Wrap a solver you call from the shell.</p>
+<ol>
+<li>Variables → <strong>File Mapper</strong> to write an input deck from a template.</li>
+<li>File Mapper → <strong>Shell Script</strong> to run the solver on the generated deck.</li>
+<li>Shell Script → <strong>Output Parser</strong> (regex or CSV) to read the result.</li>
+<li>Output Parser → <strong>Objective</strong> (and a <strong>Constraint</strong> if needed).</li>
+<li>Run a small <strong>DOE</strong> first to confirm the loop works, then switch to Optimization.</li>
+</ol>
+<p><img src="images/tutorials/02-solver-loop.png" alt="A solver-in-the-loop graph">
+<em>Variables → File Mapper → Shell Script → Output Parser → Objective: the general pattern for
+any external solver.</em></p>
+<h2 id="tutorial-3--ls-dyna-crash-optimization"><a class="header" href="#tutorial-3--ls-dyna-crash-optimization">Tutorial 3 — LS-DYNA crash optimization</a></h2>
+<p>Minimize peak displacement subject to a mass constraint.</p>
+<ol>
+<li>Variables (gauges) → <strong>File Mapper</strong> to write the keyword deck.</li>
+<li>File Mapper → <strong>Shell Script</strong> to run LS-DYNA.</li>
+<li><strong>LS-DYNA Binout</strong> reads peak displacement (triggered by the solver finishing).</li>
+<li>Binout → <strong>Objective</strong> (Minimize displacement); a Composite or second channel feeds a
+<strong>mass Constraint</strong>.</li>
+<li>Assign the solve to a <strong>SLURM</strong> <a href="#compute-targets">compute target</a> and run with several
+workers.</li>
+</ol>
+<p><img src="images/tutorials/03-lsdyna.png" alt="An LS-DYNA optimization graph">
+<em>A crash study: gauges drive the deck, LS-DYNA runs on the cluster, and Binout feeds the goals.</em></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="troubleshooting--faq"><a class="header" href="#troubleshooting--faq">Troubleshooting &amp; FAQ</a></h1>
+<h2 id="ask-optivan-in-app-help"><a class="header" href="#ask-optivan-in-app-help">Ask Optivan (in-app help)</a></h2>
+<p>The fastest way to an answer is the <strong>Ask Optivan</strong> button in the top bar. It opens a chat
+panel, knows this entire manual, and — if you tick <strong>Share project context</strong> — can look at
+your current graph and last run to give specific advice. It only reads your project to help;
+it never changes it. Project context is off by default and only sent when you opt in.</p>
+<p><img src="images/troubleshooting/01-ask-optivan.png" alt="The Ask Optivan panel answering a question">
+<em>Ask Optivan answers from the manual, and with “Share project context” ticked it can explain
+what’s wrong with your specific graph.</em></p>
+<h2 id="common-wiring-errors"><a class="header" href="#common-wiring-errors">Common wiring errors</a></h2>
+<p><strong>“I wired a variable straight into my Objective and the run does nothing useful.”</strong>
+Objective and Constraint nodes expect an <em>evaluated</em> scalar — a Python result or a parsed
+solver output — not a raw design variable. Insert an evaluator between them.</p>
+<p><strong>“My inline Python can’t see my variables.”</strong>
+Inline Python and Matlab use a <strong>single fan-in input pin</strong>. Wire every variable into that one
+pin and name your function’s parameters after the variables. Don’t look for one pin per
+variable.</p>
+<p><strong>“Optivan won’t let me connect two pins.”</strong>
+Pins are typed. A <strong>File</strong> output can’t connect to a <strong>Scalar</strong> input, and so on. Check that
+the pin types match (see <a href="#core-concepts">Core Concepts</a>).</p>
+<h2 id="run-problems"><a class="header" href="#run-problems">Run problems</a></h2>
+<p><strong>“The run fails immediately.”</strong>
+Run <strong>Validate</strong> on the graph first — it flags unwired required inputs, missing objectives,
+and type mismatches. Then run a 1-evaluation DOE with a single worker to isolate the failing
+node.</p>
+<p><strong>“My solver / Output Parser returns nothing.”</strong>
+Confirm the glob path matches the per-evaluation working directory (<code>eval_*/…</code>), and that the
+regex/CSV column actually appears in the solver’s output for that evaluation.</p>
+<p><strong>“The optimization isn’t converging.”</strong>
+Check the convergence curve. Common causes: too small an evaluation budget (<code>max_iter</code>),
+constraints that are infeasible everywhere (loosen a bound to confirm), or an objective that
+isn’t actually responding to the variables (verify with a DOE + correlation matrix). Ask
+Optivan with project context on for a graph-specific diagnosis.</p>
+<h2 id="account--licensing"><a class="header" href="#account--licensing">Account &amp; licensing</a></h2>
+<p><strong>“I’m asked to sign in again.”</strong>
+Your session is cached after sign-in. If it expired, sign in again with your email and
+password. New users set a password after entering the emailed code.</p>
+<p><strong>“How do I get the latest version?”</strong>
+Download from <strong>obt.tools</strong> with the same email you signed up with.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="automation-mcp"><a class="header" href="#automation-mcp">Automation (MCP)</a></h1>
+<p>Optivan exposes its operations over the <strong>Model Context Protocol (MCP)</strong>, so an AI agent or a
+script can build graphs, run studies, and read results programmatically — the same actions you
+take in the UI, available to automation.</p>
+<h2 id="enabling-the-mcp-server"><a class="header" href="#enabling-the-mcp-server">Enabling the MCP server</a></h2>
+<p>Start Optivan with the MCP server enabled (environment variable <code>OPTIVAN_MCP=1</code>). It listens
+on <code>localhost</code> and speaks MCP over HTTP/SSE, so MCP-aware clients (for example Claude Code or
+the in-app agent dock) can connect.</p>
+<p><img src="images/automation-mcp/01-mcp.png" alt="An agent driving Optivan through MCP">
+<em>With the MCP server enabled, an agent can add nodes, wire pins, run studies, and read results
+— driving the same canvas you see.</em></p>
+<h2 id="whats-exposed"><a class="header" href="#whats-exposed">What’s exposed</a></h2>
+<p>The toolset mirrors the app:</p>
+<ul>
+<li><strong>Graph</strong> — <code>new_project</code>, <code>add_node</code>, <code>connect_pins</code>, <code>disconnect_pins</code>, <code>list_nodes</code>,
+<code>set_node_config</code>, <code>validate_graph</code>.</li>
+<li><strong>Run</strong> — <code>set_run_config</code>, <code>set_compute_target</code>, <code>run</code>, <code>get_run_status</code>, <code>stop_run</code>.</li>
+<li><strong>LS-DYNA</strong> — <code>enumerate_binout_paths</code>, <code>list_binout_variables</code>, <code>list_d3plot_fields</code>.</li>
+<li><strong>Results</strong> — <code>get_results_data</code>, <code>show_plot</code>, <code>generate_plot</code>, <code>fit_response_surface</code>,
+<code>get_correlation_matrix</code>, <code>fit_decision_tree</code>.</li>
+<li><strong>Utility</strong> — <code>screenshot</code>, <code>set_file_mapper</code>, <code>preview_template</code>.</li>
+</ul>
+<h2 id="uses"><a class="header" href="#uses">Uses</a></h2>
+<ul>
+<li><strong>Reproducible studies</strong> — script a graph and run it the same way every time.</li>
+<li><strong>Batch exploration</strong> — sweep configurations from code.</li>
+<li><strong>Documentation</strong> — the screenshots in this manual are captured by driving Optivan through
+MCP, so they stay in sync with the UI.</li>
+</ul>
+<blockquote>
+<p>This is an advanced feature; most users never need it. The in-app <strong>Ask Optivan</strong> assistant
+uses a <em>read-only</em> view of your project (it never calls these mutating tools) — see
+<a href="#troubleshooting--faq">Troubleshooting</a>.</p>
+</blockquote>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-c22b7243.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
