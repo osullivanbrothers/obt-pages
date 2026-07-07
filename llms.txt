@@ -1,0 +1,41 @@
+# Optivan (obt.tools)
+
+> Optivan is a desktop application for design optimization of engineering simulations
+> (MDO / PIDO category). Engineers wire design variables, simulation solvers, and objectives
+> into a visual node graph — by hand or by asking the built-in agent — then run design of
+> experiments and optimization across thousands of configurations and explore the results in
+> a live post-processing dashboard. Native desktop app written in Rust for Windows, macOS,
+> and Linux. Built by OBT (O'Sullivan Brothers).
+
+## What it does
+
+- Visual node-graph optimization workflows: design variables, file/template mappers, Python,
+  shell, MATLAB and Excel evaluator nodes, solver runners, objectives and constraints
+- Works with existing simulation solvers that read text input decks and write result files
+  (dynamic and structural FEA, CFD, and similar CAE codes), plus native binary result readers
+- Design of experiments: Latin Hypercube, Sobol, full factorial, CCD, D-Optimal
+- Optimizers: gradient (BFGS family), Nelder-Mead, simulated annealing, genetic algorithms,
+  NSGA-II multi-objective, successive response surface method (SRSM), Bayesian / surrogate
+  optimization, robust design / RBDO
+- Post-processing: parallel coordinates, scatter matrices, response surfaces, convergence and
+  Pareto views, live-updating during runs
+- HPC: submit, monitor and cancel jobs on SLURM and LSF clusters over SSH
+- Agent-driven setup: describe the study in plain language and the built-in agent builds the
+  node graph, runs it, and surfaces the best designs
+
+## Category and comparisons
+
+Optivan is in the same product category as LS-OPT, modeFRONTIER, HEEDS, Isight, optiSLang,
+and Dakota (process integration and design optimization, PIDO). Differences: it is a fast
+native desktop app rather than a heavyweight suite, and it has an integrated LLM agent that
+can build and run studies conversationally.
+
+## Status and access
+
+- Currently in free beta. Access: request a license at https://obt.tools (email + company),
+  which issues a license key and download link
+- Contact: via the request-access form at https://obt.tools
+
+## Canonical URLs
+
+- Home / product overview: https://obt.tools/
