@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Feedback — Optivan</title>
+  <link rel="icon" href="/favicon.svg" />
+  <style>
+    :root { --amber: #e9a84e; --bg: #060608; --panel: #0f0f13; --line: #362e1e;
+            --ink: #e0e0e6; --dim: #8c8c96; --mono: ui-monospace, Menlo, Consolas, monospace; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink);
+           font-family: system-ui, "Segoe UI", Arial, sans-serif;
+           display: flex; min-height: 100vh; align-items: center; justify-content: center;
+           padding: 36px 16px; }
+    .wrap { width: 100%; max-width: 560px; }
+    .brand { text-align: center; margin: 0; color: var(--amber); font-weight: 800;
+             font-size: 24px; letter-spacing: .4em; text-indent: .4em; }
+    .brand a { color: inherit; text-decoration: none; }
+    .eyebrow { text-align: center; margin: 6px 0 22px; color: var(--dim);
+               font-family: var(--mono); font-size: 11px; letter-spacing: .1em; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+             padding: 26px 28px; }
+    h1 { margin: 0 0 6px; font-size: 17px; }
+    p.sub { margin: 0 0 18px; color: var(--dim); font-size: 14px; line-height: 1.55; }
+    label { display: block; margin: 14px 0 6px; color: var(--dim);
+            font-family: var(--mono); font-size: 11px; letter-spacing: .14em; font-weight: 700; }
+    input, textarea { width: 100%; background: rgba(255,255,255,.03); color: var(--ink);
+            border: 1px solid #24242b; border-radius: 6px; padding: 12px 14px;
+            font-size: 14px; font-family: inherit; outline: none; }
+    input:focus, textarea:focus { border-color: var(--amber); }
+    textarea { min-height: 160px; resize: vertical; }
+    button { margin-top: 18px; background: var(--amber); color: #000; border: 0;
+             border-radius: 4px; padding: .72rem 1.5rem; font-size: 14px; font-weight: 700;
+             cursor: pointer; }
+    button:disabled { opacity: .55; cursor: default; }
+    .msg { margin: 14px 0 0; font-size: 14px; }
+    .msg.ok { color: #7ec97e; }
+    .msg.err { color: #e07a7a; }
+    .foot { text-align: center; margin: 16px 0 0; color: #566373; font-size: 11px;
+            font-family: var(--mono); }
+    .foot a { color: var(--dim); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="brand"><a href="/">OPTIVAN</a></p>
+    <p class="eyebrow">// FEEDBACK CHANNEL</p>
+    <div class="panel">
+      <h1>Tell us what you think</h1>
+      <p class="sub">What's working, what's broken, or what you wish Optivan did.
+        If you drafted a message in the app, paste it here.</p>
+      <form id="f">
+        <label for="message">MESSAGE</label>
+        <textarea id="message" required placeholder="Your message…"></textarea>
+        <label for="email">EMAIL (optional — if you'd like a reply)</label>
+        <input id="email" type="email" placeholder="you@company.com" />
+        <button id="send" type="submit">Send feedback</button>
+        <p class="msg" id="msg" hidden></p>
+      </form>
+    </div>
+    <p class="foot">Optivan · O'Sullivan Brothers Toolworks ·
+      <a href="mailto:n8@obt.tools">n8@obt.tools</a></p>
+  </div>
+  <script>
+    const FEEDBACK_URL = "https://ygxfuhctnqruhklozrhu.supabase.co/functions/v1/feedback";
+    const form = document.getElementById("f");
+    const btn = document.getElementById("send");
+    const msg = document.getElementById("msg");
+    // Read every message; if the backend hiccups, fall back to plain email.
+    form.addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const message = document.getElementById("message").value.trim();
+      const email = document.getElementById("email").value.trim();
+      if (!message) return;
+      btn.disabled = true;
+      msg.hidden = false; msg.className = "msg"; msg.textContent = "Sending…";
+      try {
+        const res = await fetch(FEEDBACK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, email }),
+        });
+        if (!res.ok) throw new Error();
+        msg.className = "msg ok";
+        msg.textContent = "Sent — thank you. We read every message.";
+        form.reset();
+      } catch {
+        msg.className = "msg err";
+        msg.innerHTML = 'Could not send right now — please email ' +
+          '<a href="mailto:n8@obt.tools" style="color:#e9a84e">n8@obt.tools</a> instead.';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
