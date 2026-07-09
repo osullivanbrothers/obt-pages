@@ -2,7 +2,7 @@
 
 > Optivan is a desktop application for design optimization of engineering simulations
 > (MDO / PIDO category). Engineers wire design variables, simulation solvers, and objectives
-> into a visual node graph — by hand or by asking the built-in agent — then run design of
+> into a visual node graph, by hand or by asking the built-in agent, then run design of
 > experiments and optimization across thousands of configurations and explore the results in
 > a live post-processing dashboard. Native desktop app written in Rust for Windows, macOS,
 > and Linux. Built by OBT Systems.
