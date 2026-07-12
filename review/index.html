@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<!--
+  Admin review page for Optivan beta access requests. Unlinked; reached only via the
+  "Review request" button in the admin notification email (obt.tools/review/?token=…).
+  Static on purpose: the Supabase functions domain refuses to serve renderable HTML, so
+  this page lives here and drives the `approve-access` edge function as a JSON API.
+  GET fetches the request details; Approve/Deny POST the decision (so email link scanners
+  that prefetch the URL can never decide anything).
+-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Beta access review · Optivan</title>
+  <style>
+    body { margin: 0; background: #060608; min-height: 100vh;
+           font-family: system-ui, 'Segoe UI', Arial, sans-serif; }
+    .wrap { max-width: 520px; margin: 0 auto; padding: 48px 16px; }
+    .mark { text-align: center; margin: 0; color: #e9a84e; font-weight: 800;
+            font-size: 24px; letter-spacing: .4em; text-indent: .4em; }
+    .eyebrow { text-align: center; margin: 6px 0 22px; color: #8c8c96;
+               font-family: ui-monospace, Menlo, Consolas, monospace;
+               font-size: 11px; letter-spacing: .1em; }
+    .panel { background: #0f0f13; border: 1px solid #362e1e; border-radius: 8px;
+             padding: 26px 28px; }
+    h2 { margin: 0 0 6px; color: #e0e0e6; font-size: 17px; }
+    p { margin: 8px 0 0; color: #8c8c96; font-size: 14px; line-height: 1.55; }
+    table { border-collapse: collapse; margin: 14px 0 22px; }
+    td.k { padding: 4px 14px 4px 0; color: #8c8c96; font-size: 11px;
+           font-family: ui-monospace, Menlo, Consolas, monospace;
+           letter-spacing: .1em; vertical-align: top; }
+    td.v { padding: 4px 0; color: #e0e0e6; font-size: 14px; }
+    button { border: 1px solid #362e1e; font-weight: 700; border-radius: 4px;
+             padding: .72rem 1.5rem; font-size: 14px; cursor: pointer;
+             margin: 0 10px 0 0; font-family: inherit; }
+    button:disabled { opacity: .5; cursor: default; }
+    .approve { background: #e9a84e; color: #000000; }
+    .deny { background: #1a1a20; color: #c6c6ce; }
+    .hl { color: #e0e0e6; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="mark">OPTIVAN</p>
+    <p class="eyebrow">// BETA ACCESS REVIEW</p>
+    <div class="panel" id="panel">
+      <h2>Loading…</h2>
+      <p>Fetching the request.</p>
+    </div>
+  </div>
+  <script>
+    const API = "https://ygxfuhctnqruhklozrhu.supabase.co/functions/v1/approve-access";
+    const panel = document.getElementById("panel");
+    const token = new URLSearchParams(location.search).get("token");
+
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+    const show = (h2, body) => { panel.innerHTML = `<h2>${h2}</h2>${body}`; };
+
+    async function decide(action) {
+      for (const b of panel.querySelectorAll("button")) b.disabled = true;
+      show("Working…", "<p>Sending the decision.</p>");
+      try {
+        const res = await fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, action }),
+        });
+        const j = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(j.error || "Something went wrong.");
+        if (j.action === "approve") {
+          show("Approved", `<p>The download and license email is on its way to
+            <span class="hl">${esc(j.email)}</span>.</p>`);
+        } else {
+          show("Denied", `<p>A polite rejection note was sent to
+            <span class="hl">${esc(j.email)}</span>.</p>`);
+        }
+      } catch (e) {
+        show("Error", `<p>${esc(e.message)}</p>`);
+      }
+    }
+
+    async function load() {
+      if (!token) { show("Invalid link", "<p>No token in the URL.</p>"); return; }
+      try {
+        const res = await fetch(`${API}?token=${encodeURIComponent(token)}`);
+        const j = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(j.error || "Something went wrong.");
+        if (j.status !== "pending") {
+          show("Already decided", `<p>This request was already ${esc(j.status)}.</p>`);
+          return;
+        }
+        show("Beta access request", `
+          <table>
+            <tr><td class="k">NAME</td><td class="v">${esc(j.name)}</td></tr>
+            <tr><td class="k">EMAIL</td><td class="v">${esc(j.email)}</td></tr>
+            <tr><td class="k">COMPANY</td><td class="v">${esc(j.company)}</td></tr>
+          </table>
+          <button class="approve" id="approve">Approve</button>
+          <button class="deny" id="deny">Deny</button>
+          <p>Approve sends them the download and license email. Deny sends them a polite
+             rejection note.</p>`);
+        document.getElementById("approve").onclick = () => decide("approve");
+        document.getElementById("deny").onclick = () => decide("deny");
+      } catch (e) {
+        show("Nothing to review", `<p>${esc(e.message)}</p>`);
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
