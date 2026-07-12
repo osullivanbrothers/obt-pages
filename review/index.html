@@ -52,7 +52,12 @@
   <script>
     const API = "https://ygxfuhctnqruhklozrhu.supabase.co/functions/v1/approve-access";
     const panel = document.getElementById("panel");
-    const token = new URLSearchParams(location.search).get("token");
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+    // Preselected by the Approve/Deny buttons in the admin email; still needs the one
+    // confirming click below (decisions are POST only, so scanner prefetch can't decide).
+    const preset = ["approve", "deny"].includes(params.get("action"))
+      ? params.get("action") : null;
 
     const esc = (s) => String(s).replace(/[&<>"']/g, (c) =>
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -91,18 +96,36 @@
           show("Already decided", `<p>This request was already ${esc(j.status)}.</p>`);
           return;
         }
-        show("Beta access request", `
+        const details = `
           <table>
             <tr><td class="k">NAME</td><td class="v">${esc(j.name)}</td></tr>
             <tr><td class="k">EMAIL</td><td class="v">${esc(j.email)}</td></tr>
             <tr><td class="k">COMPANY</td><td class="v">${esc(j.company)}</td></tr>
-          </table>
-          <button class="approve" id="approve">Approve</button>
-          <button class="deny" id="deny">Deny</button>
-          <p>Approve sends them the download and license email. Deny sends them a polite
-             rejection note.</p>`);
-        document.getElementById("approve").onclick = () => decide("approve");
-        document.getElementById("deny").onclick = () => decide("deny");
+          </table>`;
+        if (preset) {
+          const other = preset === "approve" ? "deny" : "approve";
+          show("Beta access request", `${details}
+            <button class="${preset}" id="confirm">
+              Confirm ${preset === "approve" ? "Approve" : "Deny"}</button>
+            <p>${preset === "approve"
+              ? "This sends them the download and license email."
+              : "This sends them a polite rejection note."}
+              <a id="switch" href="#" style="color:#8c8c96">Switch to ${other}</a></p>`);
+          document.getElementById("confirm").onclick = () => decide(preset);
+          document.getElementById("switch").onclick = (ev) => {
+            ev.preventDefault();
+            params.set("action", other);
+            location.search = params.toString();
+          };
+        } else {
+          show("Beta access request", `${details}
+            <button class="approve" id="approve">Approve</button>
+            <button class="deny" id="deny">Deny</button>
+            <p>Approve sends them the download and license email. Deny sends them a polite
+               rejection note.</p>`);
+          document.getElementById("approve").onclick = () => decide("approve");
+          document.getElementById("deny").onclick = () => decide("deny");
+        }
       } catch (e) {
         show("Nothing to review", `<p>${esc(e.message)}</p>`);
       }
