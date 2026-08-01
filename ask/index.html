@@ -121,11 +121,14 @@
         history.replaceState(null, "", location.pathname + location.search);
       }
     })();
-    // License files are pretty-printed JSON; raw newlines are illegal in an HTTP
-    // header value (fetch throws before any request is made), so compact on read.
-    const license = () => {
-      const v = sessionStorage.getItem(LIC_KEY);
-      return v ? v.replace(/[\r\n]+\s*/g, "") : v;
+    const license = () => sessionStorage.getItem(LIC_KEY);
+    // HTTP header values must be ISO-8859-1 with no newlines, but license files are
+    // pretty-printed JSON that can carry any unicode (the info field). Base64 the
+    // UTF-8 bytes for transport; the backend decodes before verifying.
+    const licenseHeader = () => {
+      const v = license();
+      if (!v) return v;
+      return btoa(String.fromCharCode(...new TextEncoder().encode(v)));
     };
 
     const $ = (id) => document.getElementById(id);
@@ -212,7 +215,7 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Optivan-License": license(),
+            "X-Optivan-License": licenseHeader(),
           },
           body: JSON.stringify({ messages: history_.slice(-MAX_SEND_TURNS), session_id: sid }),
         });
@@ -306,7 +309,7 @@
         fetch(AGENT_URL, {
           method: "POST",
           keepalive: true,
-          headers: { "Content-Type": "application/json", "X-Optivan-License": license() },
+          headers: { "Content-Type": "application/json", "X-Optivan-License": licenseHeader() },
           body: JSON.stringify({ finalize: true, session_id: sid }),
         }).catch(() => {});
       } catch { /* ignore */ }
