@@ -84,7 +84,7 @@
     <div class="locked" id="locked" hidden>
       <div class="panel">
         <h1>Open this page from Optivan</h1>
-        <p>This chat is for licensed Optivan users. Choose <strong>Help → Ask Optivan</strong>
+        <p>This chat is for licensed Optivan users. Choose <strong>Help → Optivan Help</strong>
            in the app and it will open this page with your license.</p>
         <p>If your license has expired, request access again at
            <a href="https://obt.tools">obt.tools</a> and a fresh one will be emailed to
@@ -217,7 +217,7 @@
           try { msg = (await res.json()).error || ""; } catch { /* not JSON */ }
           if (res.status === 401) {
             sessionStorage.removeItem(LIC_KEY);
-            addNotice("This session's license is no longer valid. Reopen this page from Help → Ask Optivan in the app.");
+            addNotice("This session's license is no longer valid. Reopen this page from Help → Optivan Help in the app.");
             showState();
           } else {
             addNotice(msg ? renderInline(msg) : CONTACT_NOTE);
