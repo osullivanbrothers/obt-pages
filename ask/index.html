@@ -121,7 +121,12 @@
         history.replaceState(null, "", location.pathname + location.search);
       }
     })();
-    const license = () => sessionStorage.getItem(LIC_KEY);
+    // License files are pretty-printed JSON; raw newlines are illegal in an HTTP
+    // header value (fetch throws before any request is made), so compact on read.
+    const license = () => {
+      const v = sessionStorage.getItem(LIC_KEY);
+      return v ? v.replace(/[\r\n]+\s*/g, "") : v;
+    };
 
     const $ = (id) => document.getElementById(id);
     const chatEl = $("chat"), mainEl = $("main"), input = $("input"), sendBtn = $("send");
